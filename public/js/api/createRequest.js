@@ -23,7 +23,7 @@ const createRequest = (options = {}) => {
         try {
             xhr.onload = function() {
                 if (String(xhr.status).startsWith(2)) { 
-                    callback(xhr.response);
+                    callback(xhr.response.error, xhr.response);
                 }
             }
         } catch(err) {
@@ -53,7 +53,6 @@ const createRequest = (options = {}) => {
             for (let key in data) {
                 formData.append(key, data[key]);
             }
-
             return formData;
         }
     }

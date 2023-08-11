@@ -4,9 +4,7 @@
  * Имеет свойство URL, равное '/user'.
  * */
 class User {
-  constructor() {
-    this.URL = '/user';
-}
+  static URL = '/user';
   /**
    * Устанавливает текущего пользователя в
    * локальном хранилище.
@@ -107,7 +105,6 @@ class User {
       url: this.URL + '/logout',
       method: 'POST',
       responseType: 'json',
-      data,
       callback: (err, response) => {
         if (response && response.success) {
           this.unsetCurrent();
