@@ -54,7 +54,7 @@ class AsyncForm {
     return result;
   }
 
-  onSubmit(options){
+  onSubmit(options) {
     
   }
 
