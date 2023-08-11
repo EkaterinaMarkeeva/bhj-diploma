@@ -29,7 +29,7 @@ class Modal {
     const dataDismiss = Array.from(this.element.querySelectorAll('[data-dismiss="modal"]'));
 
     dataDismiss.forEach(elem => elem.onclick = () => {
-      this.onClose();
+      this.onClose(elem);
     });
   }
 
@@ -38,9 +38,7 @@ class Modal {
    * Закрывает текущее окно (Modal.close())
    * */
   onClose(e) {
-    
     this.close(e);
-    
   }
   /**
    * Открывает окно: устанавливает CSS-свойство display
