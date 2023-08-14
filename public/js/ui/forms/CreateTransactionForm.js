@@ -8,7 +8,9 @@ class CreateTransactionForm extends AsyncForm {
    * метод renderAccountsList
    * */
   constructor(element) {
-    super(element)
+    super(element);
+
+    this.renderAccountsList();
   }
 
   /**
@@ -16,7 +18,31 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
+    const incomeAccountsList = document.getElementById('income-accounts-list');
+    const expenseAccountsList = document.getElementById('expense-accounts-list');
+    
+    let updateAccountList = (error, response) => {
+      if (response.data) {
+        const incomeOptions = Array.from(incomeAccountsList.querySelectorAll('option'));
+        const expenseOptions = Array.from(expenseAccountsList.querySelectorAll('option'));
+        
+        clearOptions(incomeOptions);
+        clearOptions(expenseOptions);
+      
+        response.data.forEach(elem => {
+          incomeAccountsList.insertAdjacentHTML('beforeend', `<option value="${elem.id}">${elem.name}</option>`);
+          expenseAccountsList.insertAdjacentHTML('beforeend', `<option value="${elem.id}">${elem.name}</option>`);
+        });
+      } else {
+        console.log(error);
+      }
+    }
 
+    Account.list(User.current(), updateAccountList);
+    
+    function clearOptions(options) {
+      options.forEach(elem => elem.remove());
+    }
   }
 
   /**
@@ -26,6 +52,19 @@ class CreateTransactionForm extends AsyncForm {
    * в котором находится форма
    * */
   onSubmit(data) {
-
+    let updateTransaction = (error, response) => {
+      if (response.success) {
+        this.element.reset();
+        
+        let parent = this.element.closest('.modal');
+        
+        App.modals[parent.getAttribute('data-modal-id')].close();
+        App.update();
+      } else {
+        console.log(error);
+      }
+    }
+    
+    Transaction.create(data, updateTransaction);
   }
 }
